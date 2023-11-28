@@ -1,0 +1,27 @@
+<div class="description">
+    <h3>Blockchain Builder</h3>
+    <p>Pending: Button style, onclick for button link, logic for response.</p>
+</div>
+
+<div class="gradient"></div>
+    
+<div class="module">
+    <p>Build Blockchain</p>
+    <button onclick="NOT YET getBuildBlockchain()">Build</button>
+    <br/><br/>
+    <p class="output">GET - Build Blockchain - OUTPUT<br> </p>
+    <br>
+</div>
+
+<div class="gradient"></div>
+
+<script>
+    function getBuildBlockchain() {
+        fetch('http://192.168.58.130:4000/api/36b900c3719a933b97c70995527df5a88da15db9/build')
+            .then( response => {
+                return response.json();
+            }).then(bci => {
+                document.getElementById('bci_output').innerHTML = JSON.stringify(bci)
+            })
+    }
+</script>

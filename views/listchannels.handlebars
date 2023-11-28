@@ -1,0 +1,40 @@
+<div class="description">
+    <h3>Channel Look Up</h3>
+</div>
+
+<div class="gradient"></div>
+
+<div class="module">
+    <br>
+    <button onclick="getListChannels()">Refresh</button>
+    <br/><br/>
+    <p id="output"></p>
+    <br>
+</div>
+
+<div class="gradient"></div>
+
+<script>
+    function getListChannels() {
+        fetch('http://192.168.58.130:4000/api/36b900c3719a933b97c70995527df5a88da15db9/channel')
+            .then( response => {
+                return response.json();
+            }).then(channels => {
+                table = ''
+                output = document.getElementById('output')
+                table = '<table><tr><th>Channel</th><th>Organization</th><th>Contract</th><th>Version</th></tr>'
+                for (let i = 0; i < channels.length; i ++) {
+                    table += '<tr><td>' + channels[i]['name'] + '</td>'
+                    table += '<td>' + channels[i]['orgs'][0] + '</td>'
+                    table += '<td>' + channels[i]['contracts'][0]['name'] + '</td>'
+                    table += '<td>' + channels[i]['contracts'][0]['version'] + '</td>'
+                }
+                table += '</table>'
+                output.innerHTML = table
+                document.getElementById('output').style.display = 'block'
+                document.getElementById('output').style.display = 'block'
+            })
+    }
+
+    getListChannels()
+</script>

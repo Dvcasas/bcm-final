@@ -1,0 +1,47 @@
+<div class="description">
+    <h3>Create new users</h3>
+</div>
+
+<div class="gradient"></div>
+
+<div class="module">
+    <br>
+    <h2>Register New User</h2>
+    <form class="webforms">
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" placeholder="Username">
+        <br>
+    </form>
+    <button onclick="postCreateNewBCUser()">Register</button>
+    <br>
+    <p id="output" class="output"></p>
+    <br>
+</div>
+
+<div class="gradient"></div>
+
+<script>
+    function postCreateNewBCUser() {
+        fetch('http://192.168.58.130:4000/api/36b900c3719a933b97c70995527df5a88da15db9/users', {
+            method: "POST",
+            body: JSON.stringify({
+                "name": document.getElementById('username').value,
+                "org": "TestOrg",
+	            "department": "OtherDepartment"
+            }),
+            headers: {
+                "Content-type": "application/json; charset=utf-8"
+            }
+        })
+            .then( response => {
+                return response.json();
+            }).then(message => {
+                if (JSON.stringify(message) == '{}') {
+                    alert('Successfully Created New User!')
+                } else {
+                    document.getElementById('output').innerHTML = message['message']
+                    document.getElementById('output').style.display = 'block'
+                }
+            })
+    }
+</script>

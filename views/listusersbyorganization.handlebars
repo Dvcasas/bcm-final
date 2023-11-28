@@ -1,0 +1,29 @@
+<div class="description">
+    <h3>List Users By Organization</h3>
+    <p>Pending: Form for post request, button style, onclick for button link, logic for registration</p>
+</div>
+
+<div class="gradient"></div>
+
+<div class="module">
+        <h2>List Users by Organization</h2>
+        <input id="orgInput" type="text" placeholder="Group">
+        <br>
+        <button onclick="getListUsersByOrganization()">Get Users</button>
+        <br><br>
+        <p id="output" class="output">GET - List Users By Organization - OUTPUT</p>
+</div>
+
+<div class="gradient"></div>
+
+<script>
+    function getListUsersByOrganization() {
+        url = 'http://192.168.58.130:4000/api/36b900c3719a933b97c70995527df5a88da15db9/users/' + document.getElementById('orgInput').value
+        fetch(url)
+            .then( response => {
+                return response.json();
+            }).then(users => {
+                document.getElementById('output').innerHTML = JSON.stringify(users)
+            })
+    }
+</script>

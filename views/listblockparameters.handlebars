@@ -1,0 +1,37 @@
+<div class="description">
+    <h3>Block Look Up</h3>
+</div>
+
+<div class="gradient"></div>
+
+<div class="module">
+    <br>
+    <button onclick="getListBlockParameters()">Refresh</button>
+    <br/><br/>
+    <p id="output"></p>
+    <br>
+</div>
+
+<div class="gradient"></div>
+
+<script>
+    function getListBlockParameters() {
+        fetch('http://192.168.58.130:4000/api/36b900c3719a933b97c70995527df5a88da15db9/block')
+            .then( response => {
+                return response.json();
+            }).then(block => {
+                table = ''
+                output = document.getElementById('output')
+                table = '<table><tr><th>Timeout</th><th>Maximum Messages</th><th>Maximum Bytes</th></tr>'
+                console.log(block)
+                table += '<tr><td>' + block['timeout'] + '</td>'
+                table += '<td>' + block['batch_size']['max_messages'] + '</td>'
+                table += '<td>' + block['batch_size']['max_bytes'] + '</td>'
+                table += '</table>'
+                output.innerHTML = table
+                document.getElementById('output').style.display = 'block'
+            })
+    }
+
+    getListBlockParameters()
+</script>

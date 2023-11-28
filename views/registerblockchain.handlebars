@@ -1,0 +1,134 @@
+<div class="description">
+    <h3>Blockchain Registration</h3>
+    <p>Register a new blockchain.</p>
+</div>
+
+<div class="gradient"></div>
+
+<div class="module">
+    <form class="webforms" id="reg-form">
+        <br>
+
+        <label for="owner">Owner:</label>
+        <input type="text" id="owner" name="owner" required><br>
+
+        <label for="orderers">Orderers:</label>
+        <input type="number" id="orderers" name="orderers" required>
+        <br><br>
+
+        <div class="gradient"></div>
+
+        <h3>Block</h3>
+        <label for="timeout">Timeout:</label>
+        <input type="number" id="timeout" name="timeout" required>
+        <br><br>
+
+        <div class="gradient"></div>
+        
+        <h3>Batch Size</h3>
+        <label for="timeout">Maximum Messages:</label>
+        <input type="number" id="max_messages" name="max_messages" required><br>
+
+        <label for="timeout">Maximum Bytes:</label>
+        <input type="number" id="max_bytes" name="max_bytes" required>
+        <br><br>
+
+        <div class="gradient"></div>
+
+        <h3>Organization</h3>
+        <label for="org_name">Name:</label>
+        <input type="text" id="org_name" name="org_name" required>
+        <br><br>
+
+        <div class="gradient"></div>
+
+        <h3>Users</h3>
+        <label for="enrollmentID">Username:</label>
+        <input type="text" id="enrollmentID" name="enrollmentID" required><br>
+
+        <label for="department">Department:</label>
+        <input type="text" id="department" name="department" required>
+        <br><br>
+
+        <div class="gradient"></div>
+
+        <h3>Channels</h3>
+        <label for="channel_name">Channel Name:</label>
+        <input type="number" id="channel_name" name="channel_name" required>
+        <br><br>
+
+        <div class="gradient"></div>
+
+        <h3>Contracts</h3>
+        <label for="contract_name">Contract Name:</label>
+        <input type="number" id="contract_name" name="contract_name" required><br>
+        <br>
+
+        <button onclick="postRegisterBC()">Register</button>
+        <br><br>
+
+        <div class="gradient"></div>
+    </form>
+    <br/>
+    <p class="output"></p>
+    <br>
+</div>
+
+<div class="gradient"></div>
+
+<script>
+    function postRegisterBC() {
+        fetch('http://192.168.58.130:4000/api/', {
+            method: "POST",
+            body: JSON.stringify({
+                "owner": document.getElementById('owner').value,
+                "orderers": document.getElementById('orderers').value,
+	            "block": {
+                    "timeout": document.getElementById('timeout').value,
+                    "batch_size": {
+                        "max_messages": document.getElementById('max_messages').value,
+                        "max_bytes": document.getElementById('max_bytes').value
+                    }
+                },
+                "orgs": [
+			        {
+				        "name": document.getElementById('org_name').value,
+				        "users": [
+						    {
+							    "enrollmentID": document.getElementById('enrollmentID').value,
+							    "department": document.getElementById('department').value
+						    }
+					    ]
+			        }
+		        ],
+	            "channels": [
+			        {
+				        "name": document.getElementById('channel_name').value,
+				        "orgs": [
+						    document.getElementById('org_name').value
+					    ],
+				        "contracts": [
+                            {
+                                "name": document.getElementById('contract_name').value,
+                                "version": "1.0"
+                            }	
+					    ]
+			        }
+		        ]
+            }),
+            headers: {
+                "Content-type": "application/json; charset=utf-8"
+            }
+        })
+            .then( response => {
+                return response.json();
+            }).then(message => {
+                if (JSON.stringify(message) == '{}') {
+                    alert('Successfully Registered New Blockchain!')
+                } else {
+                    document.getElementById('output').innerHTML = message['message']
+                    document.getElementById('output').style.display = 'block'
+                }
+            })
+    }
+</script>

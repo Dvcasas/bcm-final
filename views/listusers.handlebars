@@ -1,0 +1,40 @@
+<div class="description">
+    <h3>User Look Up</h3>
+</div>
+
+<div class="gradient"></div>
+
+<div class="module">
+    <br>
+    <button onclick="getListUsers()">Refresh</button>
+    <br><br>
+    <p id="output"></p>
+    <br>
+</div>
+
+<div class="gradient"></div>
+
+<script>
+    function getListUsers() {
+        fetch('http://192.168.58.130:4000/api/36b900c3719a933b97c70995527df5a88da15db9/users')
+            .then( response => {
+                return response.json();
+            }).then(users => {
+                table = ''
+                output = document.getElementById('output')
+                table = '<table><tr><th>Username</th><th>Organization</th><th>Department</th><th>Type</th></tr>'
+                console.log(users)
+                for (let i = 1; i < users['users'].length; i ++) {
+                    table += '<tr><td>' + users['users'][i]['enrollmentID'] + '</td>'
+                    table += '<td>' + users['users'][i]['org'] + '</td>'
+                    table += '<td>' + users['users'][i]['department'] + '</td>'
+                    table += '<td>' + users['users'][i]['type'] + '</td></tr>'
+                }
+                table += '</table>'
+                output.innerHTML = table
+                document.getElementById('output').style.display = 'block'
+            })
+    }
+
+    getListUsers()
+</script>
